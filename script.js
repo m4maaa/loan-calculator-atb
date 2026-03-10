@@ -1,44 +1,85 @@
+function formatMoney(num){
+return Number(num).toLocaleString('en-US',{
+minimumFractionDigits:1,
+maximumFractionDigits:1
+});
+}
+
 function calculate(){
 
-let salary = Number(document.getElementById("salary").value);
-let psr1 = Number(document.getElementById("psr1").value);
-let psr2 = Number(document.getElementById("psr2").value);
-let psr3 = Number(document.getElementById("psr3").value);
-let psr4 = Number(document.getElementById("psr4").value);
-let other = Number(document.getElementById("other").value);
+let month=document.getElementById("month").value;
 
-let deduct = Number(document.getElementById("deduct").value);
-let debtAmount = Number(document.getElementById("debtAmount").value);
+let salary=parseFloat(document.getElementById("salary").value.replace(/,/g,''))||0;
+let receive=parseFloat(document.getElementById("totalReceive").value.replace(/,/g,''))||0;
+let deduct=parseFloat(document.getElementById("deduct").value.replace(/,/g,''))||0;
 
-let totalIncome = salary + psr1 + psr2 + psr3 + psr4 + other;
+let newPay=parseFloat(document.getElementById("newPay").value.replace(/,/g,''))||0;
+let oldDebt=parseFloat(document.getElementById("oldDebt").value.replace(/,/g,''))||0;
 
-let remainNow = totalIncome - deduct;
+let installment=document.getElementById("installment").value;
 
-let oneThird = totalIncome / 3;
+let allowed=[48,60,72,84,96,108,120];
 
-let remainAfter = totalIncome - (deduct - debtAmount);
+if(!allowed.includes(Number(installment))){
+document.getElementById("installmentError").innerHTML="✘ งวดต้องเป็น 48 60 72 84 96 108 120";
+document.getElementById("installmentError").style.color="red";
+return;
+}else{
+document.getElementById("installmentError").innerHTML="";
+}
 
-document.getElementById("totalIncome").innerText = totalIncome.toFixed(2);
-document.getElementById("remainNow").innerText = remainNow.toFixed(2);
+let remainNow=receive-deduct;
 
-document.getElementById("oneThird").innerText = oneThird.toFixed(2);
-document.getElementById("remainAfter").innerText = remainAfter.toFixed(2);
+document.getElementById("remainText").innerHTML=
+"ประจำเดือน "+month+" เหลือรับ : "+formatMoney(remainNow);
 
-let resultBox = document.getElementById("resultBox");
-let status = document.getElementById("status");
+let remainAfter=remainNow+oldDebt-newPay;
 
-if(remainAfter >= oneThird && remainAfter >= 5000){
+document.getElementById("remainAfter").innerHTML=formatMoney(remainAfter);
 
-resultBox.className = "result-box result-pass";
+let oneThird=Math.ceil((receive/3)*10)/10;
 
-status.innerHTML = "✔ ผ่านเกณฑ์ระเบียบหน่วย";
+document.getElementById("oneThird").innerHTML=formatMoney(oneThird);
+
+let passThird=remainAfter>=oneThird;
+let passFive=remainAfter>=5000;
+
+document.getElementById("ruleThird").innerHTML=
+passThird?"✔ ผ่านเกณฑ์ 1 ใน 3":"✘ ไม่ผ่านเกณฑ์ 1 ใน 3";
+
+document.getElementById("ruleThird").className=passThird?"pass":"fail";
+
+document.getElementById("ruleFive").innerHTML=
+passFive?"✔ ผ่านเกณฑ์ขั้นต่ำ 5,000":"✘ ไม่ผ่านเกณฑ์ขั้นต่ำ 5,000";
+
+document.getElementById("ruleFive").className=passFive?"pass":"fail";
+
+if(passThird && passFive){
+
+document.getElementById("finalResult").innerHTML="✔ ผ่านเกณฑ์";
+document.getElementById("finalResult").className="pass";
 
 }else{
 
-resultBox.className = "result-box result-fail";
+document.getElementById("finalResult").innerHTML="✘ ไม่ผ่านเกณฑ์";
+document.getElementById("finalResult").className="fail";
 
-status.innerHTML = "✖ ไม่ผ่านเกณฑ์";
+}
 
 }
 
+document.getElementById("reason").addEventListener("change",function(){
+
+let text=this.value;
+
+if(text.includes("ในระบบ")){
+
+document.getElementById("oldDebtBox").style.display="block";
+
+}else{
+
+document.getElementById("oldDebtBox").style.display="none";
+
 }
+
+});
