@@ -12,18 +12,16 @@ maximumFractionDigits:1
 })
 
 validateForm()
+checkAutoCalculate()
 
 }
-
 
 function getNumber(id){
 
 let val=document.getElementById(id).value.replace(/,/g,'')
-
 return parseFloat(val)||0
 
 }
-
 
 function calculate(){
 
@@ -54,17 +52,17 @@ document.getElementById("installmentError").innerText=""
 let remainNow=receive-deduct
 
 document.getElementById("remainNow").innerText=
-"ประจำเดือน "+month+" เหลือรับ "+remainNow.toLocaleString()
+"ประจำเดือน "+month+" เหลือรับ "+remainNow.toLocaleString('en-US',{minimumFractionDigits:1})
 
 let remainAfter=remainNow+oldDebt-newPay
 
 document.getElementById("remainAfter").innerText=
-remainAfter.toLocaleString('en-US',{minimumFractionDigits:1})
+remainAfter.toLocaleString('en-US',{minimumFractionDigits:1})+" บาท"
 
 let oneThird=Math.ceil((receive/3)*10)/10
 
 document.getElementById("oneThird").innerText=
-oneThird.toLocaleString('en-US',{minimumFractionDigits:1})
+oneThird.toLocaleString('en-US',{minimumFractionDigits:1})+" บาท"
 
 let passThird=remainAfter>=oneThird
 let passFive=remainAfter>=5000
@@ -94,47 +92,6 @@ final.className="fail"
 
 }
 
-
-
-function resetForm(){
-
-document.querySelectorAll("input").forEach(i=>i.value="")
-
-document.getElementById("remainNow").innerText=""
-document.getElementById("remainAfter").innerText=""
-document.getElementById("oneThird").innerText=""
-document.getElementById("ruleThird").innerText=""
-document.getElementById("ruleFive").innerText=""
-document.getElementById("finalResult").innerText=""
-
-validateForm()
-
-}
-
-
-
-function printPage(){
-window.print()
-}
-
-
-
-document.getElementById("reason").addEventListener("change",function(){
-
-if(this.value.includes("ในระบบ")){
-
-document.getElementById("oldDebtBox").style.display="block"
-
-}else{
-
-document.getElementById("oldDebtBox").style.display="none"
-
-}
-
-})
-
-
-
 function validateForm(){
 
 let receive=document.getElementById("receive").value
@@ -156,14 +113,96 @@ btn.disabled=true
 
 }
 
+function checkAutoCalculate(){
 
+let receive=document.getElementById("receive").value
+let deduct=document.getElementById("deduct").value
+let newPay=document.getElementById("newPay").value
+let installment=document.getElementById("installment").value
+
+if(receive && deduct && newPay && installment){
+
+calculate()
+
+}
+
+}
+
+function resetForm(){
+
+document.querySelectorAll("input").forEach(i=>i.value="")
+
+document.getElementById("reason").value=""
+
+document.getElementById("remainNow").innerText=""
+document.getElementById("remainAfter").innerText=""
+document.getElementById("oneThird").innerText=""
+document.getElementById("ruleThird").innerText=""
+document.getElementById("ruleFive").innerText=""
+document.getElementById("finalResult").innerText=""
+
+validateForm()
+
+}
+
+function printPage(){
+window.print()
+}
+
+const reason=document.getElementById("reason")
+const oldDebtBox=document.getElementById("oldDebtBox")
+
+reason.addEventListener("change",function(){
+
+if(this.value.includes("ในระบบ")){
+oldDebtBox.style.display="block"
+}else{
+oldDebtBox.style.display="none"
+}
+
+})
+
+document.querySelectorAll("input,select").forEach(el=>{
+
+el.addEventListener("input",function(){
+
+validateForm()
+checkAutoCalculate()
+
+})
+
+})
+
+const inputs=document.querySelectorAll("input")
+
+inputs.forEach((input,index)=>{
+
+input.addEventListener("keypress",function(e){
+
+if(e.key==="Enter"){
+
+e.preventDefault()
+
+let next=inputs[index+1]
+
+if(next){
+next.focus()
+}else{
+calculate()
+}
+
+}
+
+})
+
+})
 
 function updateTime(){
 
 let now=new Date()
 
 document.getElementById("datetime").innerText=
-"อ้างอิงเวลา : "+now.toLocaleString("th-TH")
+now.toLocaleString("th-TH")
 
 }
 
