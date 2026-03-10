@@ -4,6 +4,9 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
 <title>ระบบคำนวณเงินกู้ อทบ.</title>
 
@@ -113,11 +116,11 @@
 </button>
 
 <button class="reset" onclick="resetForm()">
-Reset
+ตั้งค่าใหม่
 </button>
 
 <button class="print" onclick="printPage()">
-Print
+ปริ้น
 </button>
 
 </div>
@@ -128,13 +131,41 @@ Print
 
 <div class="result-area">
 
-<h2>ผลลัพธ์</h2>
+<h2 class="rule-title">หลักเกณฑ์</h2>
 
-<p>1 ใน 3 ของรายได้</p>
-<p id="oneThird"></p>
+<div class="rule-block">
 
-<p>เงินเหลือหลังกู้</p>
-<p id="remainAfter"></p>
+<p class="rule-label">
+เกณฑ์ 1 ใน 3 ของรายได้
+</p>
+
+<p class="rule-desc">
+(หลังกู้ต้องเหลือไม่น้อยกว่านี้)
+</p>
+
+<p id="oneThird" class="rule-value"></p>
+
+</div>
+
+
+<div class="rule-block">
+
+<p class="rule-label">
+เงินคงเหลือหลังกู้
+</p>
+
+<p class="rule-desc">
+(รายได้สุทธิหลังหักหนี้ใหม่)
+</p>
+
+<p id="remainAfter" class="rule-value"></p>
+
+</div>
+
+
+<hr>
+
+<h2 class="result-title">ผลลัพธ์</h2>
 
 <p id="ruleThird"></p>
 <p id="ruleFive"></p>
