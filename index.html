@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>ระบบคำนวณเงินกู้ อทบ.</title>
 
 <link rel="stylesheet" href="style.css">
@@ -18,11 +20,14 @@
 <img src="logo.png" class="logo">
 
 <div class="title">
+
 <h1>ระบบคำนวณเงินกู้ อทบ.</h1>
 <p>Army Welfare Loan Calculator</p>
+
 </div>
 
 </header>
+
 
 <div class="container">
 
@@ -34,6 +39,7 @@
 
 <label>เดือน</label>
 <select id="month">
+
 <option>มกราคม</option>
 <option>กุมภาพันธ์</option>
 <option>มีนาคม</option>
@@ -46,23 +52,26 @@
 <option>ตุลาคม</option>
 <option>พฤศจิกายน</option>
 <option>ธันวาคม</option>
+
 </select>
 
 <label>เงินเดือน</label>
-<input type="text" id="salary" onkeyup="formatLive(this)">
+<input type="text" id="salary" onblur="formatMoney(this)">
 
 <label>รวมรับ</label>
-<input type="text" id="receive" onkeyup="formatLive(this)">
+<input type="text" id="receive" onblur="formatMoney(this)">
 
 <label>รวมหัก</label>
-<input type="text" id="deduct" onkeyup="formatLive(this)">
+<input type="text" id="deduct" onblur="formatMoney(this)">
 
 <p id="remainNow"></p>
+
 
 <h2>เหตุผลการกู้</h2>
 
 <select id="reason">
 
+<option value="">-- เลือกเหตุผล --</option>
 <option>เพื่อสร้าง/ต่อเติม/ซ่อมแซมที่อยู่อาศัย</option>
 <option>เพื่อซื้อ/ไถ่ถอนที่ดิน</option>
 <option>เพื่อการเกษตร</option>
@@ -73,39 +82,48 @@
 
 </select>
 
+
 <div id="oldDebtBox">
 
 <label>หนี้เดิมผ่อนต่อเดือน</label>
-<input type="text" id="oldDebt" onkeyup="formatLive(this)">
+<input type="text" id="oldDebt" onblur="formatMoney(this)">
 
 </div>
+
 
 <h2>หนี้ใหม่</h2>
 
 <label>ยอดกู้ใหม่</label>
-<input type="text" id="loan" onkeyup="formatLive(this)">
+<input type="text" id="loan" onblur="formatMoney(this)">
 
 <label>จำนวนงวด</label>
 <input type="number" id="installment">
 
 <p id="installmentError"></p>
 
-<label>
-ยอดผ่อนต่อเดือน
-<a href="http://www.oomsub.com/calculate.aspx" target="_blank">(คำนวณ)</a>
-</label>
+<label>ยอดผ่อนต่อเดือน</label>
+<input type="text" id="newPay" onblur="formatMoney(this)">
 
-<input type="text" id="newPay" onkeyup="formatLive(this)">
 
-<div class="button-group">
 
-<button onclick="calculate()">คำนวณ</button>
-<button class="reset" onclick="resetForm()">Reset</button>
-<button class="print" onclick="printPage()">Print</button>
+<div class="buttons">
+
+<button id="calcBtn" onclick="calculate()" disabled>
+คำนวณ
+</button>
+
+<button class="reset" onclick="resetForm()">
+Reset
+</button>
+
+<button class="print" onclick="printPage()">
+Print
+</button>
 
 </div>
 
 </div>
+
 
 
 <div class="result-area">
@@ -128,6 +146,7 @@
 </div>
 
 </div>
+
 
 <footer>
 
