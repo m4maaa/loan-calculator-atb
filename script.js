@@ -1,32 +1,43 @@
 function calculate(){
 
 let salary = Number(document.getElementById("salary").value);
-let psr = Number(document.getElementById("psr").value);
-let pch = Number(document.getElementById("pch").value);
+let psr1 = Number(document.getElementById("psr1").value);
+let psr2 = Number(document.getElementById("psr2").value);
+let psr3 = Number(document.getElementById("psr3").value);
+let psr4 = Number(document.getElementById("psr4").value);
 let other = Number(document.getElementById("other").value);
 
 let deduct = Number(document.getElementById("deduct").value);
-let coop = Number(document.getElementById("coop").value);
+let debtAmount = Number(document.getElementById("debtAmount").value);
 
-let totalIncome = salary + psr + pch + other;
+let totalIncome = salary + psr1 + psr2 + psr3 + psr4 + other;
+
+let remainNow = totalIncome - deduct;
 
 let oneThird = totalIncome / 3;
 
-let newDeduct = deduct - coop;
-
-let remain = totalIncome - newDeduct;
+let remainAfter = totalIncome - (deduct - debtAmount);
 
 document.getElementById("totalIncome").innerText = totalIncome.toFixed(2);
+document.getElementById("remainNow").innerText = remainNow.toFixed(2);
+
 document.getElementById("oneThird").innerText = oneThird.toFixed(2);
-document.getElementById("remain").innerText = remain.toFixed(2);
+document.getElementById("remainAfter").innerText = remainAfter.toFixed(2);
 
-if(remain >= oneThird && remain >= 5000){
+let resultBox = document.getElementById("resultBox");
+let status = document.getElementById("status");
 
-document.getElementById("result").innerHTML = "✅ ผ่านเกณฑ์";
+if(remainAfter >= oneThird && remainAfter >= 5000){
+
+resultBox.className = "result-box result-pass";
+
+status.innerHTML = "✔ ผ่านเกณฑ์ระเบียบหน่วย";
 
 }else{
 
-document.getElementById("result").innerHTML = "❌ ไม่ผ่านเกณฑ์";
+resultBox.className = "result-box result-fail";
+
+status.innerHTML = "✖ ไม่ผ่านเกณฑ์";
 
 }
 
