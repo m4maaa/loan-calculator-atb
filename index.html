@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>คำนวณเงินกู้ อทบ.</title>
+<title>ระบบคำนวณเงินกู้ อทบ.</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,88 +13,93 @@
 <h1>ระบบคำนวณเงินกู้ อทบ.</h1>
 
 <p>
-ตรวจสอบสลิปเงินเดือนผ่าน  
+ตรวจสอบสลิปเงินเดือนผ่าน
 <a href="https://e-army.rta.mi.th/V2/#" target="_blank">
-ระบบ e-Army
+e-Army
 </a>
 </p>
 
-<div class="main-grid">
+<h2>ข้อมูลรายได้</h2>
 
-<!-- ฝั่งซ้าย รายได้ -->
-
-<div class="income-box">
-
-<h2>รายได้</h2>
+<label>เดือน</label>
+<select id="month">
+<option>มกราคม</option>
+<option>กุมภาพันธ์</option>
+<option>มีนาคม</option>
+<option>เมษายน</option>
+<option>พฤษภาคม</option>
+<option>มิถุนายน</option>
+<option>กรกฎาคม</option>
+<option>สิงหาคม</option>
+<option>กันยายน</option>
+<option>ตุลาคม</option>
+<option>พฤศจิกายน</option>
+<option>ธันวาคม</option>
+</select>
 
 <label>เงินเดือน</label>
-<input type="number" id="salary">
+<input type="text" id="salary">
 
-<label>พ.ส.ร. ขั้น 1</label>
-<input type="number" id="psr1">
+<label>รวมรับ</label>
+<input type="text" id="totalReceive">
 
-<label>พ.ส.ร. ขั้น 2</label>
-<input type="number" id="psr2">
+<label>รวมหัก</label>
+<input type="text" id="deduct">
 
-<label>พ.ส.ร. ขั้น 3</label>
-<input type="number" id="psr3">
+<p id="remainText"></p>
 
-<label>พ.ส.ร. ขั้น 4</label>
-<input type="number" id="psr4">
+<h2>เหตุผลการกู้</h2>
 
-<label>รายได้อื่นๆ (พ.ส.ร.พิเศษ ฯลฯ)</label>
-<input type="number" id="other">
+<select id="reason">
+<option>เพื่อสร้าง/ต่อเติม/ซ่อมแซมที่อยู่อาศัย</option>
+<option>เพื่อซื้อ/ไถ่ถอนที่ดิน</option>
+<option>เพื่อการเกษตร</option>
+<option>เพื่อหมุนเวียน/ต่อยอดธุรกิจ</option>
+<option>เพื่อใช้จ่ายภายในครอบครัว</option>
+<option>เพื่อชำระหนี้สินนอกระบบ</option>
+<option>เพื่อชำระหนี้สินในระบบ (ปรากฏในสลิปเงินเดือน)</option>
+</select>
+
+<h2>ข้อมูลเงินกู้</h2>
+
+<label>หนี้ใหม่ (ยอดกู้)</label>
+<input type="text" id="loan">
+
+<label>จำนวนงวดผ่อน</label>
+<input type="number" id="installment">
+
+<span id="installmentError"></span>
+
+<label>
+จำนวนผ่อนต่อเดือน
+<a href="http://www.oomsub.com/calculate.aspx" target="_blank">
+(คำนวณยอด)
+</a>
+</label>
+
+<input type="text" id="newPay">
+
+<div id="oldDebtBox" style="display:none">
+
+<label>หนี้เดิมผ่อน/ต่อเดือน (ตามสลิป)</label>
+<input type="text" id="oldDebt">
+
+</div>
 
 <button onclick="calculate()">คำนวณ</button>
 
-<p>รวมรายได้ : <span id="totalIncome">0</span></p>
+<hr>
 
-</div>
-
-<!-- ฝั่งขวา -->
-
-<div class="right-box">
-
-<div class="deduct-box">
-
-<h2>รายการหัก</h2>
-
-<label>เดือนล่าสุดรวมหัก</label>
-<input type="number" id="deduct">
-
-<p>เหลือรับ : <span id="remainNow">0</span></p>
-
-</div>
-
-<div class="debt-box">
-
-<h2>กรณีปิดหนี้ในสลิป</h2>
-
-<label>รายการหนี้</label>
-<input type="text" id="debtName">
-
-<label>ยอดหักรายเดือน</label>
-<input type="number" id="debtAmount">
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ผลลัพธ์ -->
-
-<div class="result-box" id="resultBox">
-
-<h2>ผลการประเมิน</h2>
+<h2>ผลลัพธ์</h2>
 
 <p>1 ใน 3 ของรายได้ : <span id="oneThird"></span></p>
 
-<p>หลังกู้คงเหลือ : <span id="remainAfter"></span></p>
+<p>หลังกู้เหลือ : <span id="remainAfter"></span></p>
 
-<h3 id="status"></h3>
+<p id="ruleThird"></p>
+<p id="ruleFive"></p>
 
-</div>
+<h3 id="finalResult"></h3>
 
 </div>
 
