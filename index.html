@@ -4,19 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ระบบคำนวณเงินกู้ อทบ.</title>
+
 <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-<div class="container">
+<div class="watermark"></div>
 
+<header>
+
+<img src="logo.png" class="logo">
+
+<div class="title">
 <h1>ระบบคำนวณเงินกู้ อทบ.</h1>
+<p>Army Welfare Loan Calculator</p>
+</div>
 
-<p class="center">
-ตรวจสอบสลิปเงินเดือนผ่าน
-<a href="https://e-army.rta.mi.th/V2/#" target="_blank">e-Army</a>
-</p>
+</header>
+
+<div class="container">
 
 <div class="layout">
 
@@ -41,19 +49,20 @@
 </select>
 
 <label>เงินเดือน</label>
-<input type="text" id="salary" onblur="formatInput(this)">
+<input type="text" id="salary" onkeyup="formatLive(this)">
 
 <label>รวมรับ</label>
-<input type="text" id="receive" onblur="formatInput(this)">
+<input type="text" id="receive" onkeyup="formatLive(this)">
 
 <label>รวมหัก</label>
-<input type="text" id="deduct" onblur="formatInput(this)">
+<input type="text" id="deduct" onkeyup="formatLive(this)">
 
 <p id="remainNow"></p>
 
 <h2>เหตุผลการกู้</h2>
 
 <select id="reason">
+
 <option>เพื่อสร้าง/ต่อเติม/ซ่อมแซมที่อยู่อาศัย</option>
 <option>เพื่อซื้อ/ไถ่ถอนที่ดิน</option>
 <option>เพื่อการเกษตร</option>
@@ -61,19 +70,20 @@
 <option>เพื่อใช้จ่ายภายในครอบครัว</option>
 <option>เพื่อชำระหนี้สินนอกระบบ</option>
 <option>เพื่อชำระหนี้สินในระบบ (ปรากฏในสลิปเงินเดือน)</option>
+
 </select>
 
-<div id="oldDebtBox" style="display:none">
+<div id="oldDebtBox">
 
-<label>หนี้เดิมผ่อน/ต่อเดือน</label>
-<input type="text" id="oldDebt" onblur="formatInput(this)">
+<label>หนี้เดิมผ่อนต่อเดือน</label>
+<input type="text" id="oldDebt" onkeyup="formatLive(this)">
 
 </div>
 
-<h2>ข้อมูลหนี้ใหม่</h2>
+<h2>หนี้ใหม่</h2>
 
 <label>ยอดกู้ใหม่</label>
-<input type="text" id="loan" onblur="formatInput(this)">
+<input type="text" id="loan" onkeyup="formatLive(this)">
 
 <label>จำนวนงวด</label>
 <input type="number" id="installment">
@@ -81,15 +91,19 @@
 <p id="installmentError"></p>
 
 <label>
-จำนวนผ่อนต่อเดือน
-<a href="http://www.oomsub.com/calculate.aspx" target="_blank">
-(คำนวณยอด)
-</a>
+ยอดผ่อนต่อเดือน
+<a href="http://www.oomsub.com/calculate.aspx" target="_blank">(คำนวณ)</a>
 </label>
 
-<input type="text" id="newPay" onblur="formatInput(this)">
+<input type="text" id="newPay" onkeyup="formatLive(this)">
+
+<div class="button-group">
 
 <button onclick="calculate()">คำนวณ</button>
+<button class="reset" onclick="resetForm()">Reset</button>
+<button class="print" onclick="printPage()">Print</button>
+
+</div>
 
 </div>
 
@@ -101,7 +115,7 @@
 <p>1 ใน 3 ของรายได้</p>
 <p id="oneThird"></p>
 
-<p>หลังกู้เหลือ</p>
+<p>เงินเหลือหลังกู้</p>
 <p id="remainAfter"></p>
 
 <p id="ruleThird"></p>
@@ -114,6 +128,12 @@
 </div>
 
 </div>
+
+<footer>
+
+<span id="datetime"></span>
+
+</footer>
 
 <script src="script.js"></script>
 
