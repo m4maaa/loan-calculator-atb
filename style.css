@@ -1,56 +1,42 @@
 body{
-font-family: Tahoma;
-background:#f0f2f5;
-margin:30px;
+font-family:Tahoma;
+background:#e8f5e9;
+margin:40px;
 }
 
 .container{
 background:white;
-padding:20px;
+padding:25px;
 border-radius:10px;
+max-width:600px;
+margin:auto;
 box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
-.main-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-}
-
-.income-box,
-.right-box,
-.result-box{
-border:1px solid #ccc;
-padding:15px;
-border-radius:8px;
-}
-
-.right-box{
-display:flex;
-flex-direction:column;
-gap:20px;
-}
-
-input{
+input,select{
 width:100%;
-padding:6px;
-margin-bottom:8px;
+padding:8px;
+margin-bottom:10px;
 }
 
 button{
-padding:10px;
-background:#2c7be5;
+padding:12px;
+background:#4CAF50;
 color:white;
 border:none;
 cursor:pointer;
 }
 
-.result-pass{
-background:#d4edda;
-color:#155724;
+.pass{
+color:green;
+font-weight:bold;
 }
 
-.result-fail{
-background:#f8d7da;
-color:#721c24;
+.fail{
+color:red;
+font-weight:bold;
+}
+
+#error{
+color:red;
 }
