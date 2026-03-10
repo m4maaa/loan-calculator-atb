@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>คำนวณเงินกู้ อทบ.</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>ระบบคำนวณเงินกู้ อทบ.</h1>
+
+<h2>รายได้ต่อเดือน</h2>
+
+<label>เงินเดือน</label>
+<input type="number" id="salary">
+
+<label>พ.ส.ร.</label>
+<input type="number" id="psr">
+
+<label>พ.ช.ค.ข.</label>
+<input type="number" id="pch">
+
+<label>รายได้อื่นๆ</label>
+<input type="number" id="other">
+
+<h2>รายการหักปัจจุบัน</h2>
+
+<label>ยอดหักทั้งหมด</label>
+<input type="number" id="deduct">
+
+<h2>หนี้ที่ต้องการปิด</h2>
+
+<label>หนี้สหกรณ์</label>
+<input type="number" id="coop">
+
+<br><br>
+
+<button onclick="calculate()">คำนวณ</button>
+
+<h2>ผลลัพธ์</h2>
+
+<p>รายได้รวม: <span id="totalIncome"></span></p>
+<p>1/3 ของรายได้: <span id="oneThird"></span></p>
+<p>เงินคงเหลือ: <span id="remain"></span></p>
+
+<h3 id="result"></h3>
+
+<script src="script.js"></script>
+
+</body>
+</html>
