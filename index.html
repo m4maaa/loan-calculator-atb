@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,179 +10,99 @@
 <title>ระบบคำนวณเงินกู้ อทบ.</title>
 
 <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
-<div class="watermark"></div>
-
-<header>
-
-<img src="Logo.png" class="logo">
-
-<div class="title">
-
-<h1>ระบบคำนวณเงินกู้ อทบ.</h1>
-<p>Army Welfare Loan Calculator</p>
-
-</div>
-
-</header>
-
-
 <div class="container">
 
-<div class="layout">
+<header>
+<img src="logo.png" class="logo">
+<div>
+<h1>ระบบคำนวณเงินกู้ อทบ.</h1>
+<p>Army Welfare Loan Calculator</p>
+</div>
+</header>
 
-<div class="form-area">
+<section class="card">
 
 <h2>ข้อมูลรายได้</h2>
 
-<label>เดือน</label>
-<select id="month">
+<div class="row incomeRow">
 
-<option>มกราคม</option>
-<option>กุมภาพันธ์</option>
-<option>มีนาคม</option>
-<option>เมษายน</option>
-<option>พฤษภาคม</option>
-<option>มิถุนายน</option>
-<option>กรกฎาคม</option>
-<option>สิงหาคม</option>
-<option>กันยายน</option>
-<option>ตุลาคม</option>
-<option>พฤศจิกายน</option>
-<option>ธันวาคม</option>
+<input id="salary" class="numInput" placeholder="เงินเดือน">
 
-</select>
+<select id="month"></select>
 
-<label>เงินเดือน</label>
-<input type="text" id="salary" onblur="formatMoney(this)">
+</div>
 
-<label>รวมรับ</label>
-<input type="text" id="receive" onblur="formatMoney(this)">
+<div class="row">
+<input id="income" class="numInput" placeholder="รวมรับ">
+<input id="deduct" class="numInput" placeholder="รวมหัก">
+</div>
 
-<label>รวมหัก</label>
-<input type="text" id="deduct" onblur="formatMoney(this)">
+<div class="remainBox">
+เหลือรับ : <span id="remain">0.0</span>
+</div>
 
-<p id="remainNow"></p>
+</section>
 
+
+<section class="card">
 
 <h2>เหตุผลการกู้</h2>
 
 <select id="reason">
-
 <option value="">-- เลือกเหตุผล --</option>
 <option>เพื่อสร้าง/ต่อเติม/ซ่อมแซมที่อยู่อาศัย</option>
 <option>เพื่อซื้อ/ไถ่ถอนที่ดิน</option>
 <option>เพื่อการเกษตร</option>
 <option>เพื่อหมุนเวียน/ต่อยอดธุรกิจ</option>
-<option>เพื่อใช้จ่ายภายในครอบครัว</option>
 <option>เพื่อชำระหนี้สินนอกระบบ</option>
-<option>เพื่อชำระหนี้สินในระบบ (ปรากฏในสลิปเงินเดือน)</option>
-
+<option value="system">เพื่อชำระหนี้สินในระบบ</option>
 </select>
 
-
-<div id="oldDebtBox">
-
-<label>หนี้เดิมผ่อนต่อเดือน</label>
-<input type="text" id="oldDebt" onblur="formatMoney(this)">
-
+<div class="row hidden" id="debtRow">
+<input id="oldDebt" class="numInput" placeholder="หนี้เดิม/เดือน">
 </div>
 
+<input id="loan" class="loanInput" placeholder="ยอดเงินกู้ใหม่">
 
-<h2>หนี้ใหม่</h2>
+<div class="row">
+<input id="installment" class="numInput" placeholder="ยอดผ่อนต่อเดือน">
 
-<label>ยอดกู้ใหม่</label>
-<input type="text" id="loan" onblur="formatMoney(this)">
-
-<label>จำนวนงวด</label>
-<input type="number" id="installment">
-
-<p id="installmentError"></p>
-
-<label>ยอดผ่อนต่อเดือน</label>
-<input type="text" id="newPay" onblur="formatMoney(this)">
-
-
-
-<div class="buttons">
-
-<button id="calcBtn" onclick="calculate()" disabled>
-คำนวณ
-</button>
-
-<button class="reset" onclick="resetForm()">
-ตั้งค่าใหม่
-</button>
-
-<button class="print" onclick="printPage()">
-ปริ้น
-</button>
-
+<select id="period">
+<option>24</option>
+<option>36</option>
+<option>48</option>
+<option>60</option>
+<option>72</option>
+<option>84</option>
+<option>96</option>
+<option>108</option>
+<option selected>120</option>
+<option>240</option>
+</select>
 </div>
 
-</div>
+</section>
 
 
+<section class="card rules">
 
-<div class="result-area">
+<h2>หลักเกณฑ์</h2>
 
-<h2 class="rule-title">หลักเกณฑ์</h2>
+<p id="rule1">รายได้มากกว่า 1 ใน 3</p>
 
-<div class="rule-block">
+<p id="rule2">เหลือรับมากกว่า 5,000 บาท/เดือน</p>
 
-<p class="rule-label">
-เกณฑ์ 1 ใน 3 ของรายได้
-</p>
+<div class="result" id="result"></div>
 
-<p class="rule-desc">
-(หลังกู้ต้องเหลือไม่น้อยกว่านี้)
-</p>
+</section>
 
-<p id="oneThird" class="rule-value"></p>
+<button onclick="resetForm()" class="resetBtn">Reset</button>
 
 </div>
-
-
-<div class="rule-block">
-
-<p class="rule-label">
-เงินคงเหลือหลังกู้
-</p>
-
-<p class="rule-desc">
-(รายได้สุทธิหลังหักหนี้ใหม่)
-</p>
-
-<p id="remainAfter" class="rule-value"></p>
-
-</div>
-
-
-<hr>
-
-<h2 class="result-title">ผลลัพธ์</h2>
-
-<p id="ruleThird"></p>
-<p id="ruleFive"></p>
-
-<h3 id="finalResult"></h3>
-
-</div>
-
-</div>
-
-</div>
-
-
-<footer>
-
-<span id="datetime"></span>
-
-</footer>
 
 <script src="script.js"></script>
 
