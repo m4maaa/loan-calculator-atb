@@ -3,6 +3,7 @@ const salary = document.getElementById("salary")
 const income = document.getElementById("income")
 const deduct = document.getElementById("deduct")
 const remain = document.getElementById("remain")
+const remainAfter = document.getElementById("remainAfter")
 
 const installment = document.getElementById("installment")
 const rule1 = document.getElementById("rule1")
@@ -90,9 +91,24 @@ let remainMoney=inc-ded
 
 remain.textContent=format1(remainMoney)
 
-let oneThird=inc/3
+let old=parse(oldDebt.value)
+let newDebt=parse(installment.value)
 
-let afterLoan=remainMoney-parse(installment.value)
+let afterLoan
+
+if(reason.value==="system"){
+
+afterLoan = remainMoney + old - newDebt
+
+}else{
+
+afterLoan = remainMoney - newDebt
+
+}
+
+remainAfter.textContent=format1(afterLoan)
+
+let oneThird=inc/3
 
 let pass1=afterLoan>oneThird
 let pass2=afterLoan>5000
@@ -118,13 +134,62 @@ input.addEventListener("focus",function(){
 this.select()
 })
 })
+function updateTime(){
+
+let now = new Date()
+
+let date = now.toLocaleDateString("th-TH")
+
+let time = now.toLocaleTimeString("th-TH")
+
+document.getElementById("datetime").innerHTML =
+date + "<br>" + time
+
+}
+
+setInterval(updateTime,1000)
+
+updateTime()
+
 function resetForm(){
 
 document.querySelectorAll("input").forEach(i=>i.value="")
 remain.textContent="0.0"
 result.textContent=""
+remainAfter.textContent="0.0"
 
 rule1.className=""
 rule2.className=""
+
+}
+function saveImage(){
+
+const resetBtn = document.getElementById("resetBtn");
+const saveBtn = document.getElementById("saveBtn");
+
+const element = document.querySelector(".container");
+
+/* ซ่อนปุ่มก่อน capture */
+
+resetBtn.style.display = "none";
+saveBtn.style.display = "none";
+
+html2canvas(element,{
+scale:2
+}).then(canvas =>{
+
+const link = document.createElement("a");
+
+link.download = "loan-result.png";
+link.href = canvas.toDataURL("image/png");
+
+link.click();
+
+/* แสดงปุ่มกลับ */
+
+resetBtn.style.display = "block";
+saveBtn.style.display = "block";
+
+});
 
 }
