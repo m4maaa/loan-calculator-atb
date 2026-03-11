@@ -22,7 +22,69 @@
 <h1>ระบบคำนวณเงินกู้ อทบ.</h1>
 <p>Army Welfare Loan Calculator</p>
 </div>
+<div id="datetime"></div>
 </header>
+
+<section class="card">
+
+<h2>ข้อมูลกำลังพล</h2>
+
+<div class="row">
+
+<select id="rank">
+<option value="">ยศ</option>
+<option>สิบตรี</option>
+<option>สิบโท</option>
+<option>สิบเอก</option>
+<option>จ่าสิบตรี</option>
+<option>จ่าสิบโท</option>
+<option>จ่าสิบเอก</option>
+<option>ร้อยตรี</option>
+<option>ร้อยโท</option>
+<option>ร้อยเอก</option>
+<option>พันตรี</option>
+<option>พันโท</option>
+<option>พันเอก</option>
+
+</select>
+
+<input id="firstname" placeholder="ชื่อ">
+
+<input id="lastname" placeholder="สกุล">
+
+<select id="unit">
+
+<option value="">สังกัด</option>
+
+<option>สง.ผบช.</option>
+<option>ฝกพ.ฯ</option>
+<option>ฝขว.ฯ</option>
+<option>ฝยก.ฯ/สส.</option>
+<option>ฝกบ.ฯ</option>
+<option>ฝกร.ฯ</option>
+<option>ฝกง.ฯ</option>
+<option>ชุดซักถาม.ฯ</option>
+<option>ชกพ.ฯ</option>
+<option>4301</option>
+<option>4302</option>
+<option>4303</option>
+<option>4304</option>
+<option>4305</option>
+<option>4306</option>
+<option>4307</option>
+<option>4308</option>
+<option>4309</option>
+<option>4310</option>
+<option>4311</option>
+<option>4312</option>
+<option>4313</option>
+<option>4314</option>
+<option>4315</option>
+<option>4316</option>
+
+</select>
+
+</section>
 
 <section class="card">
 
@@ -42,7 +104,7 @@
 </div>
 
 <div class="remainBox">
-เหลือรับ : <span id="remain">0.0</span>
+เหลือรับ : <span id="remain">0.0</span> บาท
 </div>
 
 </section>
@@ -85,25 +147,30 @@
 </select>
 </div>
 
-</section>
+<div class="remainAfter">
+เหลือรับหลังกู้ : <span id="remainAfter">0.0</span> บาท /เดือน
+</div>
 
+</section>
 
 <section class="card rules">
 
 <h2>หลักเกณฑ์</h2>
 
 <p id="rule1">รายได้มากกว่า 1 ใน 3</p>
-
 <p id="rule2">เหลือรับมากกว่า 5,000 บาท/เดือน</p>
 
 <div class="result" id="result"></div>
 
 </section>
 
-<button onclick="resetForm()" class="resetBtn">Reset</button>
+<button onclick="resetForm()" class="resetBtn" id="resetBtn">Reset</button>
+
+<button onclick="saveImage()" class="saveBtn" id="saveBtn">Save</button>
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="script.js"></script>
 
 </body>
