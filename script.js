@@ -1,209 +1,130 @@
-function formatMoney(input){
 
-let value=input.value.replace(/,/g,'')
+const salary = document.getElementById("salary")
+const income = document.getElementById("income")
+const deduct = document.getElementById("deduct")
+const remain = document.getElementById("remain")
 
-if(value=="" || isNaN(value)) return
+const installment = document.getElementById("installment")
+const rule1 = document.getElementById("rule1")
+const rule2 = document.getElementById("rule2")
+const result = document.getElementById("result")
 
-let num=parseFloat(value)
+const reason = document.getElementById("reason")
+const debtRow = document.getElementById("debtRow")
+const oldDebt = document.getElementById("oldDebt")
 
-input.value=num.toLocaleString('en-US',{
-minimumFractionDigits:1,
-maximumFractionDigits:1
+const month = document.getElementById("month")
+
+const months = [
+"มกราคม","กุมภาพันธ์","มีนาคม","เมษายน",
+"พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม",
+"กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"
+]
+
+months.forEach((m,i)=>{
+let op=document.createElement("option")
+op.value=i
+op.textContent=m
+month.appendChild(op)
 })
 
-validateForm()
-checkAutoCalculate()
+month.value=new Date().getMonth()
+
+function format1(n){
+return Number(n).toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1})
+}
+
+function format0(n){
+return Number(n).toLocaleString("en-US")
+}
+
+function parse(v){
+return Number(v.replace(/,/g,""))||0
+}
+
+document.querySelectorAll(".numInput").forEach(el=>{
+
+// คำนวณทันทีตอนพิมพ์ แต่ยังไม่ format
+el.addEventListener("input",()=>{
+calculate()
+})
+
+// format ตอนออกจากช่อง
+el.addEventListener("blur",()=>{
+
+let val=parse(el.value)
+
+if(val!==0){
+el.value=format1(val)
+}
+
+})
+
+})
+
+document.getElementById("loan").addEventListener("input",(e)=>{
+let val=parse(e.target.value)
+e.target.value=format0(val)
+})
+
+reason.addEventListener("change",()=>{
+
+if(reason.value==="system"){
+
+debtRow.classList.remove("hidden")
+
+}else{
+
+debtRow.classList.add("hidden")
 
 }
 
-function getNumber(id){
-
-let val=document.getElementById(id).value.replace(/,/g,'')
-return parseFloat(val)||0
-
-}
+})
 
 function calculate(){
 
-let month=document.getElementById("month").value
+let inc=parse(income.value)
+let ded=parse(deduct.value)
 
-let receive=getNumber("receive")
-let deduct=getNumber("deduct")
-let oldDebt=getNumber("oldDebt")
-let newPay=getNumber("newPay")
+let remainMoney=inc-ded
 
-let installment=parseInt(document.getElementById("installment").value)
+remain.textContent=format1(remainMoney)
 
-let allowed=[48,60,72,84,96,108,120]
+let oneThird=inc/3
 
-if(!allowed.includes(installment)){
+let afterLoan=remainMoney-parse(installment.value)
 
-document.getElementById("installmentError").innerText=
-"จำนวนงวดต้องเป็น 48 60 72 84 96 108 120"
+let pass1=afterLoan>oneThird
+let pass2=afterLoan>5000
 
-return
+rule1.className=pass1?"green":"red"
+rule2.className=pass2?"green":"red"
 
-}else{
+if(pass1 && pass2){
 
-document.getElementById("installmentError").innerText=""
-
-}
-
-let remainNow=receive-deduct
-
-document.getElementById("remainNow").innerText=
-"ประจำเดือน "+month+" เหลือรับ "+remainNow.toLocaleString('en-US',{minimumFractionDigits:1})
-
-let remainAfter=remainNow+oldDebt-newPay
-
-document.getElementById("remainAfter").innerText=
-remainAfter.toLocaleString('en-US',{minimumFractionDigits:1})+" บาท"
-
-let oneThird=Math.ceil((receive/3)*10)/10
-
-document.getElementById("oneThird").innerText=
-oneThird.toLocaleString('en-US',{minimumFractionDigits:1})+" บาท"
-
-let passThird=remainAfter>=oneThird
-let passFive=remainAfter>=5000
-
-let r3=document.getElementById("ruleThird")
-let r5=document.getElementById("ruleFive")
-
-r3.innerText=passThird?"✔ ผ่านเกณฑ์ 1 ใน 3":"✘ ไม่ผ่านเกณฑ์ 1 ใน 3"
-r3.className=passThird?"pass":"fail"
-
-r5.innerText=passFive?"✔ ผ่านเกณฑ์ขั้นต่ำ 5,000":"✘ ไม่ผ่านเกณฑ์ขั้นต่ำ 5,000"
-r5.className=passFive?"pass":"fail"
-
-let final=document.getElementById("finalResult")
-
-if(passThird && passFive){
-
-final.innerText="✔ ผ่านเกณฑ์"
-final.className="pass"
+result.textContent="ผ่านหลักเกณฑ์"
+result.className="result green"
 
 }else{
 
-final.innerText="✘ ไม่ผ่านเกณฑ์"
-final.className="fail"
+result.textContent="ไม่ผ่านหลักเกณฑ์"
+result.className="result red"
 
 }
 
 }
-
-function validateForm(){
-
-let receive=document.getElementById("receive").value
-let deduct=document.getElementById("deduct").value
-let newPay=document.getElementById("newPay").value
-let installment=document.getElementById("installment").value
-
-let btn=document.getElementById("calcBtn")
-
-if(receive && deduct && newPay && installment){
-
-btn.disabled=false
-
-}else{
-
-btn.disabled=true
-
-}
-
-}
-
-function checkAutoCalculate(){
-
-let receive=document.getElementById("receive").value
-let deduct=document.getElementById("deduct").value
-let newPay=document.getElementById("newPay").value
-let installment=document.getElementById("installment").value
-
-if(receive && deduct && newPay && installment){
-
-calculate()
-
-}
-
-}
-
+document.querySelectorAll("input").forEach(input=>{
+input.addEventListener("focus",function(){
+this.select()
+})
+})
 function resetForm(){
 
 document.querySelectorAll("input").forEach(i=>i.value="")
+remain.textContent="0.0"
+result.textContent=""
 
-document.getElementById("reason").value=""
-
-document.getElementById("remainNow").innerText=""
-document.getElementById("remainAfter").innerText=""
-document.getElementById("oneThird").innerText=""
-document.getElementById("ruleThird").innerText=""
-document.getElementById("ruleFive").innerText=""
-document.getElementById("finalResult").innerText=""
-
-validateForm()
+rule1.className=""
+rule2.className=""
 
 }
-
-function printPage(){
-window.print()
-}
-
-const reason=document.getElementById("reason")
-const oldDebtBox=document.getElementById("oldDebtBox")
-
-reason.addEventListener("change",function(){
-
-if(this.value.includes("ในระบบ")){
-oldDebtBox.style.display="block"
-}else{
-oldDebtBox.style.display="none"
-}
-
-})
-
-document.querySelectorAll("input,select").forEach(el=>{
-
-el.addEventListener("input",function(){
-
-validateForm()
-checkAutoCalculate()
-
-})
-
-})
-
-const inputs=document.querySelectorAll("input")
-
-inputs.forEach((input,index)=>{
-
-input.addEventListener("keypress",function(e){
-
-if(e.key==="Enter"){
-
-e.preventDefault()
-
-let next=inputs[index+1]
-
-if(next){
-next.focus()
-}else{
-calculate()
-}
-
-}
-
-})
-
-})
-
-function updateTime(){
-
-let now=new Date()
-
-document.getElementById("datetime").innerText=
-now.toLocaleString("th-TH")
-
-}
-
-setInterval(updateTime,1000)
