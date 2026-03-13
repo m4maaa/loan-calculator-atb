@@ -56,6 +56,12 @@ flex:2;
 .incomeRow select{
 flex:1;
 }
+.incomeSummary{
+display:flex;
+justify-content:space-evenly;
+font-weight:6000;
+margin-top:6px;
+}
 input,select{
 width:100%;
 padding:10px;
