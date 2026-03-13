@@ -147,3 +147,27 @@ input{
 text-align:center;
 }
 }
+.buttonBar{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:15px;
+}
+
+.linkBtn{
+display:inline-block;
+padding:10px 12px;
+margin-top:10px;
+background:#4a8fd8;
+color:white;
+text-decoration:none;
+border-radius:10px;
+font-size:14px;
+transition:0.2s;
+
+
+}
+
+.linkBtn:hover{
+background:#3c7dc0;
+}
