@@ -1,11 +1,20 @@
+/* ===============================
+CONFIG
+=============================== */
+
+const MIN_REMAIN = 5000
+
+/* ===============================
+DOM
+=============================== */
 
 const salary = document.getElementById("salary")
 const income = document.getElementById("income")
 const deduct = document.getElementById("deduct")
 const remain = document.getElementById("remain")
 const remainAfter = document.getElementById("remainAfter")
-
 const installment = document.getElementById("installment")
+
 const rule1 = document.getElementById("rule1")
 const rule2 = document.getElementById("rule2")
 const result = document.getElementById("result")
@@ -15,6 +24,11 @@ const debtRow = document.getElementById("debtRow")
 const oldDebt = document.getElementById("oldDebt")
 
 const month = document.getElementById("month")
+const oneThirdText = document.getElementById("oneThird")
+
+/* ===============================
+MONTH LIST
+=============================== */
 
 const months = [
 "มกราคม","กุมภาพันธ์","มีนาคม","เมษายน",
@@ -23,13 +37,17 @@ const months = [
 ]
 
 months.forEach((m,i)=>{
-let op=document.createElement("option")
+const op=document.createElement("option")
 op.value=i
 op.textContent=m
 month.appendChild(op)
 })
 
 month.value=new Date().getMonth()
+
+/* ===============================
+UTILS
+=============================== */
 
 function format1(n){
 return Number(n).toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1})
@@ -40,47 +58,51 @@ return Number(n).toLocaleString("en-US")
 }
 
 function parse(v){
-return Number(v.replace(/,/g,""))||0
+return Number((v||"").replace(/,/g,""))||0
 }
+
+/* ===============================
+INPUT GUARD + FORMAT
+=============================== */
 
 document.querySelectorAll(".numInput").forEach(el=>{
 
-// คำนวณทันทีตอนพิมพ์ แต่ยังไม่ format
-el.addEventListener("input",()=>{
-calculate()
+// กันตัวอักษร
+el.addEventListener("keypress",e=>{
+if(!/[0-9.,]/.test(e.key)) e.preventDefault()
 })
 
-// format ตอนออกจากช่อง
+// คำนวณทันที
+el.addEventListener("input",calculate)
+
+// format ตอนออก
 el.addEventListener("blur",()=>{
-
 let val=parse(el.value)
-
-if(val!==0){
-el.value=format1(val)
-}
-
+if(val!==0) el.value=format1(val)
 })
 
 })
+
+/* ===============================
+LOAN FORMAT
+=============================== */
 
 document.getElementById("loan").addEventListener("input",(e)=>{
 let val=parse(e.target.value)
 e.target.value=format0(val)
 })
 
+/* ===============================
+REASON SWITCH
+=============================== */
+
 reason.addEventListener("change",()=>{
-
-if(reason.value==="system"){
-
-debtRow.classList.remove("hidden")
-
-}else{
-
-debtRow.classList.add("hidden")
-
-}
-
+debtRow.classList.toggle("hidden",reason.value!=="system")
 })
+
+/* ===============================
+CALCULATE
+=============================== */
 
 function calculate(){
 
@@ -94,102 +116,127 @@ remain.textContent=format1(remainMoney)
 let old=parse(oldDebt.value)
 let newDebt=parse(installment.value)
 
-let afterLoan
-
-if(reason.value==="system"){
-
-afterLoan = remainMoney + old - newDebt
-
-}else{
-
-afterLoan = remainMoney - newDebt
-
-}
+let afterLoan =
+reason.value==="system"
+? remainMoney + old - newDebt
+: remainMoney - newDebt
 
 remainAfter.textContent=format1(afterLoan)
 
+/* 1/3 rule */
+
 let oneThird=inc/3
 
-let pass1=afterLoan>oneThird
-let pass2=afterLoan>5000
+if(oneThirdText){
+oneThirdText.textContent=format1(oneThird)
+}
 
-rule1.className=pass1?"green":"red"
-rule2.className=pass2?"green":"red"
+/* RULE CHECK */
 
-if(pass1 && pass2){
+let pass1 = afterLoan > oneThird
+let pass2 = afterLoan > MIN_REMAIN
 
-result.textContent="ผ่านหลักเกณฑ์"
-result.className="result green"
+rule1.className = pass1 ? "green" : "red"
+rule2.className = pass2 ? "green" : "red"
 
-}else{
+/* RESULT */
 
-result.textContent="ไม่ผ่านหลักเกณฑ์"
-result.className="result red"
+let pass = pass1 && pass2
+
+result.textContent = pass ? "ผ่านหลักเกณฑ์" : "ไม่ผ่านหลักเกณฑ์"
+result.className = pass ? "result green" : "result red"
 
 }
 
-}
-document.querySelectorAll("input").forEach(input=>{
-input.addEventListener("focus",function(){
-this.select()
+/* ===============================
+AUTO SELECT INPUT
+=============================== */
+
+document.querySelectorAll("input").forEach(i=>{
+i.addEventListener("focus",()=>i.select())
 })
-})
+
+/* ===============================
+CLOCK
+=============================== */
+
 function updateTime(){
 
-let now = new Date()
+const now=new Date()
 
-let date = now.toLocaleDateString("th-TH")
+const date=now.toLocaleDateString("th-TH")
+const time=now.toLocaleTimeString("th-TH")
 
-let time = now.toLocaleTimeString("th-TH")
-
-document.getElementById("datetime").innerHTML =
-date + "<br>" + time
+document.getElementById("datetime").innerHTML=date+"<br>"+time
 
 }
 
 setInterval(updateTime,1000)
-
 updateTime()
+
+/* ===============================
+RESET
+=============================== */
 
 function resetForm(){
 
 document.querySelectorAll("input").forEach(i=>i.value="")
+
 remain.textContent="0.0"
-result.textContent=""
 remainAfter.textContent="0.0"
+
+result.textContent=""
 
 rule1.className=""
 rule2.className=""
 
 }
+
+/* ===============================
+SAVE IMAGE
+=============================== */
+
 function saveImage(){
 
-const resetBtn = document.getElementById("resetBtn");
-const saveBtn = document.getElementById("saveBtn");
+const resetBtn=document.getElementById("resetBtn")
+const saveBtn=document.getElementById("saveBtn")
+const element=document.querySelector(".container")
 
-const element = document.querySelector(".container");
-
-/* ซ่อนปุ่มก่อน capture */
-
-resetBtn.style.display = "none";
-saveBtn.style.display = "none";
+resetBtn.style.display="none"
+saveBtn.style.display="none"
 
 html2canvas(element,{
-scale:2
-}).then(canvas =>{
+scale:2,
+useCORS:true,
+allowTaint:false
+}).then(canvas=>{
 
-const link = document.createElement("a");
+const link=document.createElement("a")
 
-link.download = "loan-result.png";
-link.href = canvas.toDataURL("image/png");
+let now=new Date()
 
-link.click();
+let filename=
+"pran43rd-loan-calculator-" +
+now.getFullYear()+"-" +
+String(now.getMonth()+1).padStart(2,'0')+"-" +
+String(now.getDate()).padStart(2,'0')+"-" +
+String(now.getHours()).padStart(2,'0') +
+String(now.getMinutes()).padStart(2,'0') +
+String(now.getSeconds()).padStart(2,'0')
 
-/* แสดงปุ่มกลับ */
+link.download=filename+".png"
+link.href=canvas.toDataURL("image/png")
 
-resetBtn.style.display = "block";
-saveBtn.style.display = "block";
+link.click()
 
-});
+})
+.catch(err=>{
+console.error(err)
+alert("ไม่สามารถบันทึกภาพได้")
+})
+.finally(()=>{
+resetBtn.style.display="inline-block"
+saveBtn.style.display="inline-block"
+})
 
 }
