@@ -58,7 +58,7 @@ flex:1;
 }
 .incomeSummary{
 display:flex;
-justify-content:space-evenly;
+justify-content:space-around;
 font-weight:6000;
 margin-top:6px;
 }
