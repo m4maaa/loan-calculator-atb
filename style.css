@@ -157,6 +157,13 @@ margin-top:15px;
 .buttonBar a{
 flex:1 1 calc(50% - 8px);
 height:48px;
+transition: all 0.15s ease;
+box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+}
+.buttonBar button:active,
+.buttonBar a:active{
+transform: scale(0.96) translateY(2px);
+box-shadow: 0 1px 0 rgba(0,0,0,0.2);
 }
 .linkBtn{
 display:flex;
