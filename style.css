@@ -157,6 +157,11 @@ margin-top:15px;
 .buttonBar a{
 flex:1 1 calc(50% - 8px);
 height:48px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:6px;
+font-weight:500;
 transition: all 0.15s ease;
 box-shadow: 0 4px 0 rgba(0,0,0,0.2);
 }
