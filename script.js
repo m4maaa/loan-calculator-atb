@@ -186,6 +186,7 @@ document.querySelectorAll("input").forEach(i=>i.value="")
 
 remain.textContent="0.0"
 remainAfter.textContent="0.0"
+document.getElementById("oneThird").textContent="0.0"
 
 result.textContent=""
 
