@@ -149,23 +149,26 @@ text-align:center;
 }
 .buttonBar{
 display:flex;
-gap:10px;
+gap:8px;
 flex-wrap:wrap;
 margin-top:15px;
 }
-
+.buttonBar button,
+.buttonBar a{
+flex:1 1 calc(50% - 8px);
+height:48px;
+}
 .linkBtn{
-display:inline-block;
-padding:10px 12px;
-margin-top:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:10px;
 background:#4a8fd8;
 color:white;
 text-decoration:none;
-border-radius:10px;
+border-radius:8px;
 font-size:14px;
-transition:0.2s;
-
-
+white-space:nowrap;
 }
 
 .linkBtn:hover{
