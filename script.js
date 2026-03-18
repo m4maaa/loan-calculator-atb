@@ -26,6 +26,8 @@ const oldDebt = document.getElementById("oldDebt")
 const month = document.getElementById("month")
 const oneThirdText = document.getElementById("oneThird")
 
+const resultBox = document.getElementById("result")
+
 /* ===============================
 MONTH LIST
 =============================== */
@@ -239,4 +241,49 @@ resetBtn.style.display="inline-block"
 saveBtn.style.display="inline-block"
 })
 
+}
+function calculate(){
+
+resultBox.textContent = "กำลังคำนวณ..."
+resultBox.className = "result loading"
+
+setTimeout(()=>{
+
+let inc=parse(income.value)
+let ded=parse(deduct.value)
+
+let remainMoney=inc-ded
+remain.textContent=format1(remainMoney)
+
+let old=parse(oldDebt.value)
+let newDebt=parse(installment.value)
+
+let afterLoan
+
+if(reason.value==="system"){
+afterLoan = remainMoney + old - newDebt
+}else{
+afterLoan = remainMoney - newDebt
+}
+
+remainAfter.textContent=format1(afterLoan)
+
+let oneThird=inc/3
+document.getElementById("oneThird").textContent = format1(oneThird)
+
+let pass1=afterLoan>oneThird
+let pass2=afterLoan>5000
+
+rule1.className=pass1?"green":"red"
+rule2.className=pass2?"green":"red"
+
+if(pass1 && pass2){
+resultBox.textContent="ผ่านหลักเกณฑ์"
+resultBox.className="result green"
+}else{
+resultBox.textContent="ไม่ผ่านหลักเกณฑ์"
+resultBox.className="result red"
+}
+
+},300) // ดีเลย์ 0.3 วิ (กำลังสวย)
 }
