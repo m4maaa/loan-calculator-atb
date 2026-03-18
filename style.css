@@ -182,7 +182,15 @@ border-radius:8px;
 font-size:14px;
 white-space:nowrap;
 }
-
 .linkBtn:hover{
 background:#3c7dc0;
+}
+.loading{
+color:#888;
+animation: blink 1s infinite;
+}
+@keyframes blink{
+0%{opacity:1;}
+50%{opacity:0.4;}
+100%{opacity:1;}
 }
